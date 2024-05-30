@@ -1,6 +1,7 @@
 import pygame
+import random
 
-class Vuelo(pygame.sprite.Sprite):
+class Pajaro(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.animacion = False
@@ -19,36 +20,33 @@ class Vuelo(pygame.sprite.Sprite):
     def movimiento(self):
         self.animacion = True
 
-    def volar_derecha(self, speed):
+    def update(self):
         if self.animacion:
-            self.sprite_actual += speed
+            self.sprite_actual += 0.1
             if int(self.sprite_actual) >= len(self.sprites):
                 self.sprite_actual = 0
 
-            self.rect.x += 2
-            self.rect.y -= 7
+            if self.direccion == 'derecha':
+                self.rect.x += 2
+                self.rect.y -= 7
 
-            if self.rect.right < 0 or self.rect.bottom < 0:
-                self.rect.topleft = (self.rect.topleft[0] + 2, 700)
+                if self.rect.right < 0 or self.rect.bottom < 0:
+                    self.rect.topleft = (self.rect.topleft[0] + 2, 700)
 
-            if self.rect.topleft[0] >= 768:
-                self.rect.topleft = (0, 700)
+                if self.rect.topleft[0] >= 768:
+                    self.rect.topleft = (0, 700)
 
-            self.image = self.sprites[int(self.sprite_actual)]
-            
-    def volar_izquierda(self, speed):
-        if self.animacion:
-            self.sprite_actual += speed
-            if int(self.sprite_actual) >= len(self.sprites):
-                self.sprite_actual = 0
+            elif self.direccion == 'izquierda':
+                self.rect.x -= 2
+                self.rect.y -= 7
 
-            self.rect.x -= 2
-            self.rect.y -= 7
+                if self.rect.right < 0 or self.rect.bottom < 0:
+                    self.rect.topleft = (self.rect.topleft[0] - 2, 700)
 
-            if self.rect.right < 0 or self.rect.bottom < 0:
-                self.rect.topleft = (self.rect.topleft[0] - 2, 700)
-
-            if self.rect.topleft[0] < 0:
-                self.rect.topleft = (700, 700)
+                if self.rect.topleft[0] < 0:
+                    self.rect.topleft = (700, 700)
 
             self.image = self.sprites[int(self.sprite_actual)]
+
+    def change_direction(self, direction):
+        self.direccion = direction
